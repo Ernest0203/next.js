@@ -1,6 +1,7 @@
 'use client'; 
 
 import { useEffect, useState } from 'react';
+import AddPostForm from './add';
 interface Post {
   _id: string;
   title: string;
@@ -26,6 +27,10 @@ export default function ClientPostsPage() {
     fetchPosts();
   }, []);
 
+  const addPostToCache = (newPost: Post) => {
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
+  };
+
   const result = posts.map((post) => (
     <li key={post._id}>
       <h2>{post.title}</h2>
@@ -43,6 +48,7 @@ export default function ClientPostsPage() {
     <div>
       <h1>Client-side Posts</h1>
       {renderTime && <p>Time to render: {renderTime}ms</p>}
+      <AddPostForm onAdd={addPostToCache} />
       {posts.length === 0 ? (
         <p>No posts available.</p>
       ) : (
